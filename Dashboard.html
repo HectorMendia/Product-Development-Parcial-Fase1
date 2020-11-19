@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <script type="application/shiny-singletons"></script>
+  <script type="application/html-dependencies">json2[2014.02.04];jquery[3.5.1];shiny[1.5.0];font-awesome[5.13.0];selectize[0.11.2];bootstrap-datepicker[1.6.4];ionrangeslider[2.1.6];strftime[0.9.2];bootstrap[3.4.1]</script>
+<script src="shared/json2-min.js"></script>
+<script src="shared/jquery.min.js"></script>
+<link href="shared/shiny.css" rel="stylesheet" />
+<script src="shared/shiny.min.js"></script>
+<link href="font-awesome-5.13.0/css/all.min.css" rel="stylesheet" />
+<link href="font-awesome-5.13.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="shared/selectize/css/selectize.bootstrap3.css" rel="stylesheet" />
+<!--[if lt IE 9]>
+<script src="shared/selectize/js/es5-shim.min.js"></script>
+<![endif]-->
+<script src="shared/selectize/js/selectize.min.js"></script>
+<link href="shared/datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+<script src="shared/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script>
+(function() {
+  var datepicker = $.fn.datepicker.noConflict();
+  $.fn.bsDatepicker = datepicker;
+})();
+</script>
+<link href="shared/ionrangeslider/css/ion.rangeSlider.css" rel="stylesheet" />
+<link href="shared/ionrangeslider/css/ion.rangeSlider.skinShiny.css" rel="stylesheet" />
+<script src="shared/ionrangeslider/js/ion.rangeSlider.min.js"></script>
+<script src="shared/strftime/strftime-min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="shared/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<script src="shared/bootstrap/js/bootstrap.min.js"></script>
+<script src="shared/bootstrap/shim/html5shiv.min.js"></script>
+<script src="shared/bootstrap/shim/respond.min.js"></script>  <title>Academatica Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="shinythemes/css/cerulean.min.css"/>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <span class="navbar-brand">Academatica Dashboard</span>
+      </div>
+      <ul class="nav navbar-nav" data-tabsetid="6484">
+        <li class="active">
+          <a href="#tab-6484-1" data-toggle="tab" data-value="Resumen">
+            <i class=" fa fa-check fa-fw"></i>
+            Resumen
+          </a>
+        </li>
+        <li>
+          <a href="#tab-6484-2" data-toggle="tab" data-value="Historico">
+            <i class=" fa fa-chart-line fa-fw"></i>
+            Historico
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="tab-content" data-tabsetid="6484">
+      <div class="tab-pane active" data-value="Resumen" data-icon-class="fa fa-check" id="tab-6484-1">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="row" style="background-color:#d9edf7;margin: 10px;">
+              <div class="col-sm-8">
+                <h3>859</h3>
+                <h5>Total de videos</h5>
+              </div>
+              <div class="col-sm-3">
+                <div><i class="fa fa-youtube" style = "color:#0072B2; font-size: 5em;"></i></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="row" style="background-color:#d9edf7;margin: 10px;">
+              <div class="col-sm-8">
+                <h3>29,371,314</h3>
+                <h5>Total de vistas</h5>
+              </div>
+              <div class="col-sm-3">
+                <div><i class="fa fa-desktop" style = "color:#0072B2; font-size: 5em;"></i></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="row" style="background-color:#d9edf7;margin: 10px;">
+              <div class="col-sm-8">
+                <h3>12,796</h3>
+                <h5>Total de comentarios</h5>
+              </div>
+              <div class="col-sm-3">
+                <div><i class="fa fa-user-edit" style = "color:#0072B2; font-size: 5em;"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div id="grafica_top" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
+          </div>
+          <div class="col-sm-6">
+            <div id="grafica_likes" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div id="grafica_cantidad" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
+        </div>
+      </div>
+      <div class="tab-pane" data-value="Historico" data-icon-class="fa fa-chart-line" id="tab-6484-2">
+        <div class="row">
+          <div class="col-sm-4 offset-md-2 col-sm-offset-2">
+            <div class="form-group shiny-input-container">
+              <label class="control-label" for="nivel">Nivel</label>
+              <div>
+                <select id="nivel"><option value="Mes" selected>Mes</option>
+<option value="Trimestre">Trimestre</option>
+<option value="Año">Año</option></select>
+                <script type="application/json" data-for="nivel" data-nonempty="">{}</script>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div id="fechas" class="shiny-date-range-input form-group shiny-input-container">
+              <label class="control-label" for="fechas">Rango de Fechas</label>
+              <div class="input-daterange input-group input-group-sm">
+                <input class="form-control" type="text" data-date-language="en" data-date-week-start="0" data-date-format="yyyy-mm-dd" data-date-start-view="month" data-min-date="2006-10-07" data-max-date="2020-08-10" data-initial-date="2015-01-01" data-date-autoclose="true"/>
+                <span class="input-group-addon input-group-prepend input-group-append">
+                  <span class="input-group-text"> a </span>
+                </span>
+                <input class="form-control" type="text" data-date-language="en" data-date-week-start="0" data-date-format="yyyy-mm-dd" data-date-start-view="month" data-min-date="2006-10-07" data-max-date="2020-08-10" data-initial-date="2019-12-31" data-date-autoclose="true"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3>Historico de Likes vs Dislikes</h3>
+        <div class="row">
+          <div class="col-sm-11">
+            <div id="historico_likes" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
+          </div>
+          <div class="col-sm-1">
+            <div class="row">
+              <h4 style="color:blue">Likes</h4>
+              <h4 style="color:red">Dislike</h4>
+            </div>
+          </div>
+        </div>
+        <h3>Word Cloud</h3>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group shiny-input-container">
+              <label class="control-label" for="freq">Frecuencia:</label>
+              <input class="js-range-slider" id="freq" data-min="1" data-max="50" data-from="10" data-step="1" data-grid="true" data-grid-num="9.8" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number"/>
+            </div>
+            <div class="form-group shiny-input-container">
+              <label class="control-label" for="max">Cantidad de palabras:</label>
+              <input class="js-range-slider" id="max" data-min="1" data-max="300" data-from="50" data-step="1" data-grid="true" data-grid-num="9.96666666666667" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number"/>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div id="plot_word" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
