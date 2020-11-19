@@ -103,7 +103,25 @@ shinyUI(navbarPage(title = "Academatica Dashboard",
                                       
                                       )
                             ),
-                            plotOutput("historico_likes")
+                            h3("Historico de Likes vs Dislikes"),
+                            fluidRow(
+                              column(11, plotOutput("historico_likes")),
+                              column(1, fluidRow(h4("Likes", style = "color:blue"), h4("Dislike", style = "color:red")))
+                            ),
+                            h3("Word Cloud"),
+                            fluidRow(
+                              column(4,
+                                     sliderInput("freq",
+                                                 "Frecuencia:",
+                                                 min = 1,  max = 50, value = 15),
+                                     sliderInput("max",
+                                                 "Cantidad de palabras:",
+                                                 min = 1,  max = 300,  value = 100)
+                              ),
+                              column(8,
+                                     plotOutput("plot_word")
+                              )
+                            )
                    )
                    
 ))

@@ -10,6 +10,10 @@ library(ggplot2)
 library(dplyr)
 library(scales)
 library(DBI)
+library(tm)
+library(wordcloud)
+library(memoise)
+
 
 con <- DBI::dbConnect(odbc::odbc(),
                       Driver   = "PostgreSQL ANSI",
@@ -18,6 +22,24 @@ con <- DBI::dbConnect(odbc::odbc(),
                       UID      = 'postgres',
                       PWD      = 'pass12345',
                       Port     = 5432)
+
+processNLP <- memoise(function(text) {
+  
+  corpus = Corpus(VectorSource(text))
+  corpus = tm_map(corpus, content_transformer(tolower))
+  corpus = tm_map(corpus, function(x) iconv(x, to='UTF-8', sub = "byte"))
+  corpus = tm_map(corpus, removePunctuation)
+  corpus = tm_map(corpus, removeNumbers)
+  corpus = tm_map(corpus, removeWords,
+                  c(stopwords("SMART"), "thy", "thou", "thee", "the", "and", "but"))
+  
+  dtm = TermDocumentMatrix(corpus,
+                           control = list(minWordLength = 1))
+  
+  m = as.matrix(dtm)
+  
+  sort(rowSums(m), decreasing = TRUE)
+})
 
 
 shinyServer(function(input, output) {
@@ -83,6 +105,21 @@ shinyServer(function(input, output) {
   })
   
   
+  #output$click_data <- renderPrint({
+  #  clk_msg <- NULL
+  #  if (!is.null(input$clk$x)){
+  #    #browser()
+  #    #print(input$clk$x)    
+  #    clk_msg <- paste0("click coordenada x= ", round(input$clk$x,2),
+  #                      " click coordenada y= ", round(input$clk$y,2))
+  #    #print(clk_msg)
+  #  }
+  #  clk_msg
+  #  #cat(clk_msg, dclk_msg, mhover_msg, mbrush, sep = "\n")
+  #  
+  #})
+  
+  
 
   hist_likes <- reactive({
      
@@ -137,7 +174,7 @@ shinyServer(function(input, output) {
       
       #geom_line(aes(x=fecha,y=vistas/coeff, group=3),color='green') +
       
-      ggtitle("Historico de likes & dislikes") +
+      #ggtitle("Historico de likes & dislikes") +
       ylab('Cantidad')+
       xlab('Fecha')
       #scale_y_continuous(
@@ -158,5 +195,30 @@ shinyServer(function(input, output) {
     hist_likes()
   )
   
+  terms <- reactive({
+    #input$update
+    query <- paste("select title from meta m, videos v where m.video_id=videoId 
+         and videoPublishedAt >= '",input$fechas[1] ,"00:00:00' and videoPublishedAt<='",input$fechas[2] ," 23:59' ")   
+    
+    totales <- dbGetQuery(conn= con, statement = query)
+    print(totales)
+    
+    isolate({
+      withProgress({
+        #mydata <- read.csv("academatica_videos_metadata.csv", header = TRUE)
+        
+        df <- data.frame(as.list(totales["title"]))
+        processNLP(df$title)
+      })
+    })
+  })
+  wordcloud_rep <- repeatable(wordcloud)
+  
+  output$plot_word <- renderPlot({
+    v <- terms()
+    wordcloud_rep(names(v), v, scale=c(4,0.5),
+                  min.freq = input$freq, max.words=input$max,
+                  colors=brewer.pal(8, "Dark2"))
+  })
   
 })
