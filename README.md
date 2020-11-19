@@ -5,9 +5,14 @@
 * 20000758 - Hector Alberto Heber Mendia Arriola
 * 05244028 - Edwin Estuardo Zapeta Gómez
 
-#### **Desarrollo**
+#### **Desarrollo** 
 
-A continuación se describen los pasos para el desarrollo del proyecto. Lo primero que se necesita son las imagenes para Rsutdio (entorno de desarrollo) y Postgres (base de datos donde se alojara la información).
+A continuación archivos de referencia a la aplicación:
+
+* [server.r](https://github.com/estuardozapeta/Product-Development-Parcial-Fase1/blob/main/server.R)
+* [ui.r](https://github.com/estuardozapeta/Product-Development-Parcial-Fase1/blob/main/ui.R)
+
+Lo primero que se necesita son las imagenes para Rsutdio (entorno de desarrollo) y Postgres (base de datos donde se alojara la información).
 
 **1. Comando para descargar imagen Rstudio**
 
@@ -113,6 +118,9 @@ library(ggplot2)
 library(dplyr)
 library(scales)
 library(DBI)
+library(tm)
+library(wordcloud)
+library(memoise)
 ```
 
 * **shiny**: Paquete que facilita la creación de aplicaciones web interactivas directamente desde R.
@@ -120,6 +128,9 @@ library(DBI)
 * **dplyr**: Proporciona una forma bastante ágil de manejar los ficheros de datos de R.
 * **scales**: Proporciona estética a los gráficos (etiquetas, ejes y leyendas).
 * **DBI**: Definición de interfaz de base de datos para la comunicación entre R y los sistemas de gestión de bases de datos relacionales.
+* **tm**: Framework de minería de texto dentro de R.
+* **wordcloud**: Permite la creación y visualización de nubes de palabras, similitudes entre documentos y equilibra la dispersión de texto.
+* **memoise**: Almacena en memoria los resultados de una función para que cuando se llame de nuevo con los mismos argumentos devuelva el valor almacenado en cache.
 
 **8. Conexión a la base de datos desde R**
 
